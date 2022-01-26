@@ -24,17 +24,17 @@ window.onload = () => {
     // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
   };
 
-  //   const mouse = new Image();
-  //   mouse.src = "./images/mouse.png";
-  //   mouse.onload = () => {
-  //     // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
-  //   };
+  const mouse = new Image();
+  mouse.src = "./images/mouse.png";
+  mouse.onload = () => {
+    // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
+  };
 
-  //   const pig = new Image();
-  //   pig.src = "./images/pig.png";
-  //   pig.onload = () => {
-  //     // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
-  //   };
+  const pig = new Image();
+  pig.src = "./images/pig.png";
+  pig.onload = () => {
+    // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
+  };
 
   class Component {
     constructor() {
@@ -84,14 +84,14 @@ window.onload = () => {
       this.y = 0;
       this.w = 50;
       this.h = 50;
-      this.image = dog;
+      this.image = this.generateAnimals();
     }
 
-    // generateAnimals = () => {
-    //   let animalArr = [dog.src, mouse.src, pig.src];
-    //   let x = Math.floor(Math.random() * animalArr.length);
-    //   return animalArr[x];
-    // };
+    generateAnimals = () => {
+      let animalArr = [dog, mouse, pig];
+      let x = Math.floor(Math.random() * animalArr.length);
+      return animalArr[x];
+    };
 
     move() {
       this.y = this.y + 4;
@@ -100,9 +100,9 @@ window.onload = () => {
 
   const rose = new Component();
 
-  const obstacleArr = [];
+  let obstacleArr = [];
 
-  const pointsArr = [];
+  let pointsArr = [];
 
   //Movements
 
@@ -123,8 +123,11 @@ window.onload = () => {
     }
   });
 
+  let obstacleId = 0;
+
   function createObj() {
-    obstacleArr.push(new Obstacle());
+    obstacleArr.push(new Obstacle(obstacleId));
+    obstacleId++;
   }
 
   function createObj2() {
@@ -165,7 +168,12 @@ window.onload = () => {
         obstacleArr[i].w,
         obstacleArr[i].h
       );
-      //   didCollide = detectCollision(rose, obstacleArr);
+      didCollide = detectCollision(rose, obstacleArr[i]);
+      if (didCollide) {
+        obstacleArr = obstacleArr.filter(function (e) {
+          return e.id !== obstacleArr[i].id;
+        });
+      }
     }
 
     for (let i = 0; i < pointsArr.length; i++) {
@@ -177,18 +185,24 @@ window.onload = () => {
         pointsArr[i].w,
         pointsArr[i].h
       );
+      didCollide = detectCollision(rose, pointsArr[i]);
+      if (didCollide) {
+        // pointsArr = pointsArr.filter(function (e) {
+        //   return e.id !== pointsArr[i].id;
+        // });
+        pointsArr.splice(i, 1);
+      }
+    }
+  }
+
+  function detectCollision(player, obj) {
+    if (
+      player.x < obj.x + obj.w &&
+      player.x + player.w > obj.x &&
+      player.y < obj.y + obj.h &&
+      player.y + player.h > obj.y
+    ) {
+      return true;
     }
   }
 };
-
-// function detectCollision(player, obj) {
-//   if (
-//     player.x < obj.x + obj.w &&
-//     player.x + player.w > obj.x &&
-//     player.y < obj.y + obj.h &&
-//     player.y + player.h > obj.y
-//   ) {
-//     obstacleArr = obstacleArr.filter(function (e) {
-//       return e.id !== obj.id;
-//     });
-//   }
