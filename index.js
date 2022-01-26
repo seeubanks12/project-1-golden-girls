@@ -2,14 +2,40 @@ window.onload = () => {
   document.getElementById("start-button").onclick = () => {
     startGame();
   };
+  function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function () {
+      this.sound.play();
+    };
+    this.stop = function () {
+      this.sound.pause();
+    };
+  }
+
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   let isGameOn = false;
 
+  //   let health = 3;
+  let obstacleId = 0;
+  let rescueId = 0;
+  let mySound;
+
+  const logo = new Image();
+  logo.src = "./images/game-logo.png";
+  logo.onload = () => {
+    ctx.drawImage(logo, 10, 0, 300, 150);
+  };
+
   const betty = new Image();
   betty.src = "./images/betty.png";
   betty.onload = () => {
-    ctx.drawImage(betty, canvas.width / 2, canvas.height - 50 - 100, 200, 200);
+    ctx.drawImage(betty, canvas.width / 2, canvas.height - 100, 100, 100);
   };
 
   const cat = new Image();
@@ -39,9 +65,9 @@ window.onload = () => {
   class Component {
     constructor() {
       this.x = canvas.width / 2;
-      this.y = canvas.height - 150;
-      this.w = 200;
-      this.h = 200;
+      this.y = canvas.height - 100;
+      this.w = 100;
+      this.h = 100;
       this.image = betty;
     }
 
@@ -71,20 +97,26 @@ window.onload = () => {
       this.h = 50;
       this.id = id;
       this.image = cat;
+      //   this.deduct = this.deductPoints();
     }
+
+    // deductPoints = () => {
+    //   return Math.floor(Math.random() * 2) - 1;
+    // };
 
     move() {
       this.y = this.y + 4;
     }
   }
 
-  class Points {
+  class Rescue {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = 0;
       this.w = 50;
       this.h = 50;
       this.image = this.generateAnimals();
+      //   this.points = this.generatePoints();
     }
 
     generateAnimals = () => {
@@ -92,6 +124,10 @@ window.onload = () => {
       let x = Math.floor(Math.random() * animalArr.length);
       return animalArr[x];
     };
+
+    // generatePoints = () => {
+    //   return score + 1;
+    // };
 
     move() {
       this.y = this.y + 4;
@@ -102,7 +138,7 @@ window.onload = () => {
 
   let obstacleArr = [];
 
-  let pointsArr = [];
+  let rescueArr = [];
 
   //Movements
 
@@ -123,39 +159,37 @@ window.onload = () => {
     }
   });
 
-  let obstacleId = 0;
-
   function createObj() {
     obstacleArr.push(new Obstacle(obstacleId));
     obstacleId++;
   }
 
   function createObj2() {
-    pointsArr.push(new Points());
+    rescueArr.push(new Rescue(rescueId));
+    rescueId++;
   }
 
   let score;
 
   function startGame() {
-    score = 0;
+    score += 10;
     if (!isGameOn) {
       isGameOn = true;
       setInterval(createObj, 800);
       setInterval(createObj2, 800);
       animate();
     } else {
-      console.log("Game is already running");
     }
+    mySound = new sound("theme-song .mp3");
   }
 
-  let game;
-
   function animate() {
-    game = window.requestAnimationFrame(animate);
+    window.requestAnimationFrame(animate);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(rose.image, rose.x, rose.y, rose.w, rose.h);
-    score++;
-    ctx.fillText(`Score: ${score}`, 10, 10);
+    ctx.fillStyle = "white";
+    ctx.font = "20px Ariel";
+    ctx.fillText(`Score: ${score}`, 650, 35);
 
     for (let i = 0; i < obstacleArr.length; i++) {
       // ctx.drawImage(angryCat.image, angryCat.x, angryCat.y, angryCat.w, angryCat.h);
@@ -176,23 +210,26 @@ window.onload = () => {
       }
     }
 
-    for (let i = 0; i < pointsArr.length; i++) {
-      pointsArr[i].move();
+    if (didCollide) {
+    }
+
+    for (let i = 0; i < rescueArr.length; i++) {
+      rescueArr[i].move();
       ctx.drawImage(
-        pointsArr[i].image,
-        pointsArr[i].x,
-        pointsArr[i].y,
-        pointsArr[i].w,
-        pointsArr[i].h
+        rescueArr[i].image,
+        rescueArr[i].x,
+        rescueArr[i].y,
+        rescueArr[i].w,
+        rescueArr[i].h
       );
-      didCollide = detectCollision(rose, pointsArr[i]);
+
+      didCollide = detectCollision(rose, rescueArr[i]);
       if (didCollide) {
-        // pointsArr = pointsArr.filter(function (e) {
-        //   return e.id !== pointsArr[i].id;
-        // });
-        pointsArr.splice(i, 1);
+        rescueArr.splice(i, 1);
       }
     }
+    // document.querySelector("points").innerText = score;
+    // document.querySelector("health").innerText = health;
   }
 
   function detectCollision(player, obj) {
