@@ -35,37 +35,37 @@ window.onload = () => {
   let rescueId = 0;
 
   const logo = new Image();
-  logo.src = "./images/game-logo.png";
+  logo.src = ".images/game-logo.png";
   logo.onload = () => {
     ctx.drawImage(logo, 0, -150, 800, 550);
   };
 
   const betty = new Image();
-  betty.src = "./images/betty.png";
+  betty.src = "/images/betty.png";
   betty.onload = () => {
     ctx.drawImage(betty, canvas.width - 500, canvas.height - 400, 200, 200);
   };
 
   const cat = new Image();
-  cat.src = "./images/angry.png";
+  cat.src = "/images/angry.png";
   cat.onload = () => {
     // ctx.drawImage(cat, canvas.width / 2, canvas.height - 100, 50, 50);
   };
 
   const dog = new Image();
-  dog.src = "./images/dog.png";
+  dog.src = "/images/dog.png";
   dog.onload = () => {
     // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
   };
 
   const mouse = new Image();
-  mouse.src = "./images/mouse.png";
+  mouse.src = "/images/mouse.png";
   mouse.onload = () => {
     // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
   };
 
   const pig = new Image();
-  pig.src = "./images/pig.png";
+  pig.src = "/images/pig.png";
   pig.onload = () => {
     // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
   };
