@@ -2,20 +2,25 @@ window.onload = () => {
   document.getElementById("start-button").onclick = () => {
     startGame();
   };
-  function sound(src) {
-    this.sound = document.createElement("audio");
-    this.sound.src = src;
-    this.sound.setAttribute("preload", "auto");
-    this.sound.setAttribute("controls", "none");
-    this.sound.style.display = "none";
-    document.body.appendChild(this.sound);
-    this.play = function () {
-      this.sound.play();
-    };
-    this.stop = function () {
-      this.sound.pause();
-    };
+
+  function updatePoints(newPoints) {
+    document.querySelector("#points").innerText = newPoints;
   }
+
+  //   function sound(src) {
+  //     this.sound = document.createElement("audio");
+  //     this.sound.src = src;
+  //     this.sound.setAttribute("preload", "auto");
+  //     this.sound.setAttribute("controls", "none");
+  //     this.sound.style.display = "none";
+  //     document.body.appendChild(this.sound);
+  //     this.play = function () {
+  //       this.sound.play();
+  //     };
+  //     this.stop = function () {
+  //       this.sound.pause();
+  //     };
+  // }
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
@@ -24,7 +29,6 @@ window.onload = () => {
   //   let health = 3;
   let obstacleId = 0;
   let rescueId = 0;
-  let mySound;
 
   const logo = new Image();
   logo.src = "./images/game-logo.png";
@@ -69,6 +73,7 @@ window.onload = () => {
       this.w = 100;
       this.h = 100;
       this.image = betty;
+      this.points = 0;
     }
 
     move(direction) {
@@ -97,6 +102,7 @@ window.onload = () => {
       this.h = 50;
       this.id = id;
       this.image = cat;
+      this.pointValue = -1;
       //   this.deduct = this.deductPoints();
     }
 
@@ -116,6 +122,7 @@ window.onload = () => {
       this.w = 50;
       this.h = 50;
       this.image = this.generateAnimals();
+      this.pointValue = 1;
       //   this.points = this.generatePoints();
     }
 
@@ -180,16 +187,17 @@ window.onload = () => {
       animate();
     } else {
     }
-    mySound = new sound("theme-song .mp3");
+    let mySound;
+    let myMusic;
+    mySound = new sound("theme-song.mp3");
+    myMusic = new sound("theme-song.mp3");
+    myMusic.play();
   }
 
   function animate() {
     window.requestAnimationFrame(animate);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(rose.image, rose.x, rose.y, rose.w, rose.h);
-    ctx.fillStyle = "white";
-    ctx.font = "20px Ariel";
-    ctx.fillText(`Score: ${score}`, 650, 35);
 
     for (let i = 0; i < obstacleArr.length; i++) {
       // ctx.drawImage(angryCat.image, angryCat.x, angryCat.y, angryCat.w, angryCat.h);
@@ -239,6 +247,11 @@ window.onload = () => {
       player.y < obj.y + obj.h &&
       player.y + player.h > obj.y
     ) {
+      //Update the player points
+      player.points += obj.pointValue;
+
+      //Show the updated points on the screen
+      updatePoints(player.points);
       return true;
     }
   }
