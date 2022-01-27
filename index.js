@@ -4,27 +4,31 @@ window.onload = () => {
   };
 
   function updatePoints(newPoints) {
-    document.querySelector("#points").innerText = newPoints;
+    document.querySelector("span").innerText = newPoints;
   }
 
-  //   function sound(src) {
-  //     this.sound = document.createElement("audio");
-  //     this.sound.src = src;
-  //     this.sound.setAttribute("preload", "auto");
-  //     this.sound.setAttribute("controls", "none");
-  //     this.sound.style.display = "none";
-  //     document.body.appendChild(this.sound);
-  //     this.play = function () {
-  //       this.sound.play();
-  //     };
-  //     this.stop = function () {
-  //       this.sound.pause();
-  //     };
-  // }
+  class sound {
+    constructor(src) {
+      this.sound = document.createElement("audio");
+      this.sound.src = src;
+      this.sound.setAttribute("preload", "auto");
+      this.sound.setAttribute("controls", "none");
+      this.sound.style.display = "none";
+      document.body.appendChild(this.sound);
+      this.play = function () {
+        this.sound.play();
+      };
+      this.stop = function () {
+        this.sound.pause();
+      };
+    }
+  }
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   let isGameOn = false;
+  canvas.width = 800;
+  canvas.height = 600;
 
   //   let health = 3;
   let obstacleId = 0;
@@ -33,13 +37,13 @@ window.onload = () => {
   const logo = new Image();
   logo.src = "./images/game-logo.png";
   logo.onload = () => {
-    ctx.drawImage(logo, 10, 0, 300, 150);
+    ctx.drawImage(logo, 0, -150, 800, 550);
   };
 
   const betty = new Image();
   betty.src = "./images/betty.png";
   betty.onload = () => {
-    ctx.drawImage(betty, canvas.width / 2, canvas.height - 100, 100, 100);
+    ctx.drawImage(betty, canvas.width - 500, canvas.height - 400, 200, 200);
   };
 
   const cat = new Image();
@@ -68,8 +72,8 @@ window.onload = () => {
 
   class Component {
     constructor() {
-      this.x = canvas.width / 2;
-      this.y = canvas.height - 100;
+      this.x = canvas.width - 450;
+      this.y = 500;
       this.w = 100;
       this.h = 100;
       this.image = betty;
@@ -102,7 +106,7 @@ window.onload = () => {
       this.h = 50;
       this.id = id;
       this.image = cat;
-      this.pointValue = -1;
+      this.pointValue = -10;
       //   this.deduct = this.deductPoints();
     }
 
@@ -122,7 +126,7 @@ window.onload = () => {
       this.w = 50;
       this.h = 50;
       this.image = this.generateAnimals();
-      this.pointValue = 1;
+      this.pointValue = 10;
       //   this.points = this.generatePoints();
     }
 
@@ -177,25 +181,26 @@ window.onload = () => {
   }
 
   let score;
+  let game;
+
+  let myMusic;
+  let mySound = new sound("theme-song.mp3");
 
   function startGame() {
+    myMusic = new sound("theme-song.mp3");
+    mySound.play();
     score += 10;
     if (!isGameOn) {
       isGameOn = true;
       setInterval(createObj, 800);
       setInterval(createObj2, 800);
+      setTimeout(gameOver, 10000);
       animate();
-    } else {
     }
-    let mySound;
-    let myMusic;
-    mySound = new sound("theme-song.mp3");
-    myMusic = new sound("theme-song.mp3");
-    myMusic.play();
   }
 
   function animate() {
-    window.requestAnimationFrame(animate);
+    game = window.requestAnimationFrame(animate);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(rose.image, rose.x, rose.y, rose.w, rose.h);
 
@@ -218,8 +223,8 @@ window.onload = () => {
       }
     }
 
-    if (didCollide) {
-    }
+    // if (didCollide) {
+    // }
 
     for (let i = 0; i < rescueArr.length; i++) {
       rescueArr[i].move();
@@ -236,8 +241,19 @@ window.onload = () => {
         rescueArr.splice(i, 1);
       }
     }
-    // document.querySelector("points").innerText = score;
-    // document.querySelector("health").innerText = health;
+  }
+
+  function gameOver() {
+    mySound.stop();
+    console.log("gameover");
+    window.cancelAnimationFrame(game);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "red";
+    ctx.font = "50px serif";
+    ctx.fillText(`TIME'S UP`, 350, 90);
+    ctx.fillStyle = "white";
+    ctx.font = "30px serif";
+    ctx.fillText(`You helped Rose save ${points} animals!`, 75, 300);
   }
 
   function detectCollision(player, obj) {
@@ -252,6 +268,7 @@ window.onload = () => {
 
       //Show the updated points on the screen
       updatePoints(player.points);
+
       return true;
     }
   }

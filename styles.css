@@ -1,11 +1,40 @@
 body {
   padding: 0;
   text-align: center;
+  background-image: url("/images/nature.jpeg");
+  background-size: cover;
+}
+
+.directions {
+  display: flex;
+  background-color: #e8bf18;
+  justify-content: center;
+  font-family: copperplate;
+  color: #0e4d29;
+  margin-top: 5px;
+  padding-left: 5px;
+  font-size: 20px;
+  display: inline;
+  padding-right: 9px;
+  border-radius: 5px;
 }
 
 .game-intro {
   float: left;
   padding: 0% 10%;
+}
+
+#points {
+  display: flex;
+  justify-content: center;
+  font-family: copperplate;
+  color: #0e4d29;
+  margin-top: 5px;
+  padding-left: 5px;
+  font-size: 30px;
+  display: inline;
+  padding-right: 9px;
+  border-radius: 5px;
 }
 
 .game-intro p {
@@ -23,7 +52,8 @@ body {
 
 body button {
   font-size: 20px;
-  background-color: #870007;
+  font-family: copperplate;
+  background-color: #29a329;
   color: #fff;
   padding: 10px 40px;
   border: 0;
@@ -36,14 +66,10 @@ body button {
   justify-content: center;
 }
 
-#game-board {
-
-}
+/* #game-board {
+} */
 
 #canvas {
-  background-image: url("/images/gghouse.jpeg");
-  background-size: cover;
-  height: auto;
-  margin: auto;
+  width: 800px;
+  height: 600px;
 }
-
