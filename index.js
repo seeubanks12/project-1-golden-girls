@@ -253,7 +253,7 @@ window.onload = () => {
     ctx.fillText(`TIME'S UP!`, 275, 125);
     ctx.fillStyle = "white";
     ctx.font = "30px serif";
-    ctx.fillText(`You helped Rose save ${pointValue} animals!`, 75, 300);
+    // ctx.fillText(`You helped Rose save ${pointValue} animals!`, 75, 300);
   }
 
   function detectCollision(player, obj) {

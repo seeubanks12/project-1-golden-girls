@@ -1,7 +1,7 @@
 body {
   padding: 0;
   text-align: center;
-  background-image: url("/images/nature.jpeg");
+  background-image: url("images/nature.jpeg");
   background-size: cover;
 }
 
