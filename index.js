@@ -194,7 +194,7 @@ window.onload = () => {
       isGameOn = true;
       setInterval(createObj, 800);
       setInterval(createObj2, 800);
-      setTimeout(gameOver, 10000);
+      setTimeout(gameOver, 1000);
       animate();
     }
   }
@@ -248,12 +248,12 @@ window.onload = () => {
     console.log("gameover");
     window.cancelAnimationFrame(game);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "red";
-    ctx.font = "50px serif";
-    ctx.fillText(`TIME'S UP`, 350, 90);
+    ctx.fillStyle = "#0e4d29";
+    ctx.font = "50px copperplate";
+    ctx.fillText(`TIME'S UP!`, 275, 125);
     ctx.fillStyle = "white";
     ctx.font = "30px serif";
-    ctx.fillText(`You helped Rose save ${points} animals!`, 75, 300);
+    ctx.fillText(`You helped Rose save ${pointValue} animals!`, 75, 300);
   }
 
   function detectCollision(player, obj) {
