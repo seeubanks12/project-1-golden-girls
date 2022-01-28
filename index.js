@@ -7,6 +7,7 @@ window.onload = () => {
     document.querySelector("span").innerText = newPoints;
   }
 
+  //Audio Class
   class sound {
     constructor(src) {
       this.sound = document.createElement("audio");
@@ -30,45 +31,45 @@ window.onload = () => {
   canvas.width = 800;
   canvas.height = 600;
 
+  //Global Variables
   let obstacleId = 0;
   let rescueId = 0;
 
+
+//Game Images
   const logo = new Image();
-  logo.src = ".images/game-logo.png";
+  logo.src = "./images/game-logo.png";
   logo.onload = () => {
     ctx.drawImage(logo, 0, -150, 800, 550);
   };
 
   const betty = new Image();
-  betty.src = "/images/betty.png";
+  betty.src = "./images/betty.png";
   betty.onload = () => {
     ctx.drawImage(betty, canvas.width - 500, canvas.height - 400, 200, 200);
   };
 
   const cat = new Image();
-  cat.src = "/images/angry.png";
+  cat.src = "./images/angry.png";
   cat.onload = () => {
-    // ctx.drawImage(cat, canvas.width / 2, canvas.height - 100, 50, 50);
   };
 
   const dog = new Image();
-  dog.src = "/images/dog.png";
+  dog.src = "./images/dog.png";
   dog.onload = () => {
-    // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
   };
 
   const mouse = new Image();
-  mouse.src = "/images/mouse.png";
+  mouse.src = "./images/mouse.png";
   mouse.onload = () => {
-    // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
   };
 
   const pig = new Image();
-  pig.src = "/images/pig.png";
+  pig.src = "./images/pig.png";
   pig.onload = () => {
-    // ctx.drawImage(dog, canvas.width / 2, canvas.height - 100, 50, 50);
   };
 
+  //Classes
   class Component {
     constructor() {
       this.x = canvas.width - 450;
@@ -106,12 +107,7 @@ window.onload = () => {
       this.id = id;
       this.image = cat;
       this.pointValue = -10;
-      //   this.deduct = this.deductPoints();
     }
-
-    // deductPoints = () => {
-    //   return Math.floor(Math.random() * 2) - 1;
-    // };
 
     move() {
       this.y = this.y + 4;
@@ -126,7 +122,7 @@ window.onload = () => {
       this.h = 50;
       this.image = this.generateAnimals();
       this.pointValue = 10;
-      //   this.points = this.generatePoints();
+
     }
 
     generateAnimals = () => {
@@ -134,10 +130,6 @@ window.onload = () => {
       let x = Math.floor(Math.random() * animalArr.length);
       return animalArr[x];
     };
-
-    // generatePoints = () => {
-    //   return score + 1;
-    // };
 
     move() {
       this.y = this.y + 4;
@@ -192,7 +184,7 @@ window.onload = () => {
       isGameOn = true;
       setInterval(createObj, 800);
       setInterval(createObj2, 800);
-      setTimeout(gameOver, 40000);
+      setTimeout(gameOver, 41500);
       animate();
     }
 
@@ -202,7 +194,6 @@ window.onload = () => {
       ctx.drawImage(rose.image, rose.x, rose.y, rose.w, rose.h);
 
       for (let i = 0; i < obstacleArr.length; i++) {
-        // ctx.drawImage(angryCat.image, angryCat.x, angryCat.y, angryCat.w, angryCat.h);
         obstacleArr[i].move();
 
         ctx.drawImage(
@@ -245,8 +236,12 @@ window.onload = () => {
       ctx.font = "50px copperplate";
       ctx.fillText(`TIME'S UP!`, 275, 125);
       ctx.fillStyle = "white";
-      ctx.font = "30px copperplate";
-      ctx.fillText("Click the STARTGAME button to play again!", 75, 250);
+      ctx.font = "25px copperplate";
+      ctx.fillText(
+        "Click the STARTGAME button to rescue more animals!",
+        45,
+        250
+      );
       isGameOn = false;
       document.getElementById("start-button").onclick = () => {
         startGame();

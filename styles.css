@@ -19,11 +19,6 @@ body {
   border-radius: 5px;
 }
 
-.game-intro {
-  float: left;
-  padding: 0% 10%;
-}
-
 #points {
   display: flex;
   justify-content: center;
@@ -35,19 +30,6 @@ body {
   display: inline;
   padding-right: 9px;
   border-radius: 5px;
-}
-
-.game-intro p {
-  font-size: 18px;
-  font-family: "Verdana";
-}
-
-.logo-img {
-  width: 350px;
-}
-
-.arrows-img {
-  width: 150px;
 }
 
 body button {
@@ -65,9 +47,6 @@ body button {
 #start-button {
   justify-content: center;
 }
-
-/* #game-board {
-} */
 
 #canvas {
   width: 800px;
