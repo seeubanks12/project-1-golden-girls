@@ -30,7 +30,6 @@ window.onload = () => {
   canvas.width = 800;
   canvas.height = 600;
 
-  //   let health = 3;
   let obstacleId = 0;
   let rescueId = 0;
 
@@ -183,7 +182,6 @@ window.onload = () => {
   let score;
   let game;
 
-  let myMusic;
   let mySound = new sound("theme-song.mp3");
 
   function startGame() {
@@ -194,82 +192,84 @@ window.onload = () => {
       isGameOn = true;
       setInterval(createObj, 800);
       setInterval(createObj2, 800);
-      setTimeout(gameOver, 1000);
+      setTimeout(gameOver, 40000);
       animate();
     }
-  }
 
-  function animate() {
-    game = window.requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(rose.image, rose.x, rose.y, rose.w, rose.h);
+    function animate() {
+      game = window.requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(rose.image, rose.x, rose.y, rose.w, rose.h);
 
-    for (let i = 0; i < obstacleArr.length; i++) {
-      // ctx.drawImage(angryCat.image, angryCat.x, angryCat.y, angryCat.w, angryCat.h);
-      obstacleArr[i].move();
+      for (let i = 0; i < obstacleArr.length; i++) {
+        // ctx.drawImage(angryCat.image, angryCat.x, angryCat.y, angryCat.w, angryCat.h);
+        obstacleArr[i].move();
 
-      ctx.drawImage(
-        obstacleArr[i].image,
-        obstacleArr[i].x,
-        obstacleArr[i].y,
-        obstacleArr[i].w,
-        obstacleArr[i].h
-      );
-      didCollide = detectCollision(rose, obstacleArr[i]);
-      if (didCollide) {
-        obstacleArr = obstacleArr.filter(function (e) {
-          return e.id !== obstacleArr[i].id;
-        });
+        ctx.drawImage(
+          obstacleArr[i].image,
+          obstacleArr[i].x,
+          obstacleArr[i].y,
+          obstacleArr[i].w,
+          obstacleArr[i].h
+        );
+        didCollide = detectCollision(rose, obstacleArr[i]);
+        if (didCollide) {
+          obstacleArr = obstacleArr.filter(function (e) {
+            return e.id !== obstacleArr[i].id;
+          });
+        }
+      }
+
+      for (let i = 0; i < rescueArr.length; i++) {
+        rescueArr[i].move();
+        ctx.drawImage(
+          rescueArr[i].image,
+          rescueArr[i].x,
+          rescueArr[i].y,
+          rescueArr[i].w,
+          rescueArr[i].h
+        );
+
+        didCollide = detectCollision(rose, rescueArr[i]);
+        if (didCollide) {
+          rescueArr.splice(i, 1);
+        }
       }
     }
 
-    // if (didCollide) {
-    // }
-
-    for (let i = 0; i < rescueArr.length; i++) {
-      rescueArr[i].move();
-      ctx.drawImage(
-        rescueArr[i].image,
-        rescueArr[i].x,
-        rescueArr[i].y,
-        rescueArr[i].w,
-        rescueArr[i].h
-      );
-
-      didCollide = detectCollision(rose, rescueArr[i]);
-      if (didCollide) {
-        rescueArr.splice(i, 1);
-      }
+    function gameOver() {
+      mySound.stop();
+      window.cancelAnimationFrame(game);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0e4d29";
+      ctx.font = "50px copperplate";
+      ctx.fillText(`TIME'S UP!`, 275, 125);
+      ctx.fillStyle = "white";
+      ctx.font = "30px copperplate";
+      ctx.fillText("Click the STARTGAME button to play again!", 75, 250);
+      isGameOn = false;
+      document.getElementById("start-button").onclick = () => {
+        startGame();
+      };
     }
-  }
 
-  function gameOver() {
-    mySound.stop();
-    console.log("gameover");
-    window.cancelAnimationFrame(game);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#0e4d29";
-    ctx.font = "50px copperplate";
-    ctx.fillText(`TIME'S UP!`, 275, 125);
-    ctx.fillStyle = "white";
-    ctx.font = "30px serif";
-    // ctx.fillText(`You helped Rose save ${pointValue} animals!`, 75, 300);
-  }
+    rose.points = 0;
 
-  function detectCollision(player, obj) {
-    if (
-      player.x < obj.x + obj.w &&
-      player.x + player.w > obj.x &&
-      player.y < obj.y + obj.h &&
-      player.y + player.h > obj.y
-    ) {
-      //Update the player points
-      player.points += obj.pointValue;
+    function detectCollision(player, obj) {
+      if (
+        player.x < obj.x + obj.w &&
+        player.x + player.w > obj.x &&
+        player.y < obj.y + obj.h &&
+        player.y + player.h > obj.y
+      ) {
+        //Update the player points
+        player.points += obj.pointValue;
 
-      //Show the updated points on the screen
-      updatePoints(player.points);
+        //Show the updated points on the screen
+        updatePoints(player.points);
 
-      return true;
+        return true;
+      }
     }
   }
 };
